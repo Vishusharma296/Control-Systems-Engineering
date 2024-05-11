@@ -7,6 +7,7 @@
 FOC can be broadly classified into two categories: 
 1. Direct FOC with feedback vector control
 2. Indirect FOC with feedforward vector control (Sensorless Control)
+
 ### Principle of Operation
 
 1. **Transformation to a Rotating Reference Frame:** FOC involves transforming the three-phase AC motor currents and voltages from the stationary phase frame (a-b-c) to a rotating reference frame (d-q) aligned with the rotor flux vector:
@@ -35,6 +36,7 @@ FOC is extensively used in:
 - Electric vehicles (EVs)
 - Industrial drives
 - Robotics
+  
 ### Direct Quadrature (d-q) Coordinate Transformation
 
 - The d-q transformation is a mathematical technique used to convert three-phase AC quantities into two-phase DC-like quantities, simplifying the analysis and control of electrical machines. 
@@ -51,21 +53,29 @@ DQZ transformation is the combination of Clark and Park transformation.
 
 Clark Matrix is given by:
 
-$$K_{C} = \sqrt{\frac{2}{3}}\cdot\begin{bmatrix}
+$$
+K_{C} = \sqrt{\frac{2}{3}}\cdot\begin{bmatrix}
    1 & -\frac{1}{2} & -\frac{1}{2} \\
    0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} \\
    \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}}
-\end{bmatrix}$$
+\end{bmatrix}
+$$
+
 Park Matrix is given by:
-$$K_{P} = \begin{bmatrix}
+
+$$
+K_{P} = \begin{bmatrix}
    \cos{\left(\theta\right)} & \sin{\left(\theta\right)} & 0 \\
    -\sin{\left(\theta\right)} & \cos{\left(\theta\right)} & 0 \\
    0 & 0 & 1
-\end{bmatrix}$$
+\end{bmatrix}
+$$
+
 Combined Clark and Park Matrix can be written as:
 $$K_{CP} = K_{P}\cdot K_{C}$$
 
-$$ K_{CP} = \sqrt{\frac{2}{3}}\begin{bmatrix}
+$$ 
+K_{CP} = \sqrt{\frac{2}{3}}\begin{bmatrix}
    \cos{\left(\theta\right)}
       & \cos{\left(\theta - \frac{2\pi}{3}\right)}
       & \cos{\left(\theta + \frac{2\pi}{3}\right)} \\
@@ -75,9 +85,13 @@ $$ K_{CP} = \sqrt{\frac{2}{3}}\begin{bmatrix}
    \frac{\sqrt{2}}{2}
       & \frac{\sqrt{2}}{2}
       & \frac{\sqrt{2}}{2}
-\end{bmatrix}$$
-The inverse Clark Park transform is
-$$K_{CP}^{-1} = \sqrt{\frac{2}{3}}\begin{bmatrix}
+\end{bmatrix}
+$$
+
+The inverse Clark Park transform is:
+
+$$
+K_{CP}^{-1} = \sqrt{\frac{2}{3}}\begin{bmatrix}
    \cos{\left(\theta\right)}
       & -\sin{\left(\theta\right)}
       & \frac{\sqrt{2}}{2} \\
@@ -87,57 +101,70 @@ $$K_{CP}^{-1} = \sqrt{\frac{2}{3}}\begin{bmatrix}
    \cos{\left(\theta + \frac{2\pi}{3}\right)}
       & -\sin{\left(\theta + \frac{2\pi}{3}\right)}
       & \frac{\sqrt{2}}{2}
-\end{bmatrix}$$
+\end{bmatrix}
+$$
 
-#### Clarke Transformation (a-b-c to α-β Frame):
+#### Clarke Transformation (a-b-c to α-β Frame)
 
+```math
 $$
 \begin{bmatrix} 
 i_\alpha \\ 
 i_\beta 
 \end{bmatrix} 
-= 
-K_c
+= K_c \cdot
 \begin{bmatrix} 
 i_a \\ 
 i_b \\ 
 i_c 
 \end{bmatrix} 
 $$
+```
+```math
 $$
 K_c = \begin{bmatrix} 
 1 & -\frac{1}{2} & -\frac{1}{2} \\ 
 0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} 
 \end{bmatrix} 
 $$
+```
+```math
 $$ 
 \begin{bmatrix} i_\alpha \\ i_\beta \end{bmatrix} = \begin{bmatrix} 1 & -\frac{1}{2} & -\frac{1}{2} \\ 0 & \frac{\sqrt{3}}{2} & -\frac{\sqrt{3}}{2} \end{bmatrix} \begin{bmatrix} i_a \\ i_b \\ i_c \end{bmatrix}
 $$
-
+```
 #### Park Transformation (α-β to d-q Frame):
+
+```math
 $$
 \begin{bmatrix} 
 i_d \\ 
 i_q 
 \end{bmatrix} 
-= 
-K_p
+= K_p
 \begin{bmatrix} 
 i_\alpha \\ 
 i_\beta 
-\end{bmatrix} $$
-
+\end{bmatrix} 
+$$
+```
+```math
 $$
 K_p = \begin{bmatrix} 
 \cos(\theta) & -\sin(\theta) \\ 
 \sin(\theta) & \cos(\theta) 
 \end{bmatrix}$$
+```
+
+```math
 $$
 \begin{bmatrix} i_d \\ i_q \end{bmatrix} = \begin{bmatrix} \cos(\theta) & -\sin(\theta) \\ \sin(\theta) & \cos(\theta) \end{bmatrix} \begin{bmatrix} i_\alpha \\ i_\beta \end{bmatrix}
 $$
+```
 
 ### Combined Transformation (a-b-c to d-q Frame):
 
+```math
 $$ 
 \begin{bmatrix} 
 i_d \\ 
@@ -151,6 +178,8 @@ i_b \\
 i_c 
 \end{bmatrix} 
 $$
+```
+```math
 $$
 \begin{bmatrix} 
 i_d \\ 
@@ -171,6 +200,8 @@ i_b \\
 i_c 
 \end{bmatrix} 
 $$
+```
+
 These equations illustrate the process of transforming currents between the stationary a-b-c frame and the rotating d-q frame, facilitating independent control of torque and flux in field-oriented control of AC motors. This transformation is essential for implementing Field Oriented Control (FOC) algorithms in AC motor drives to achieve precise control of torque and flux. The inverse transformations can also be defined to convert the d-q currents $i_d$ and $i_q$ back to the three-phase stationary reference frame $i_a$, $i_b$ , $i_c$. Here $\theta$ is the electrical angle of the rotor.
 
 ### Kron Equations
