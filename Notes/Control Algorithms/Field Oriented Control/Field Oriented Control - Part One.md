@@ -104,6 +104,11 @@ K_{CP}^{-1} = \sqrt{\frac{2}{3}}\begin{bmatrix}
 \end{bmatrix}
 $$
 
+### Application of the Clark and Park transform to the current
+
+![DQZ transform application](https://github.com/Vishusharma296/Control-Systems-Engineering/assets/73486657/167e7ce9-a816-4265-a76f-923b67bfc0ae)
+
+
 #### Clarke Transformation (a-b-c to α-β Frame)
 
 ```math
